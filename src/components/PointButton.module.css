@@ -1,0 +1,26 @@
+.pointButton {
+  margin-top: 2rem;
+  padding: 1rem;
+  background-color: rgb(255, 153, 0);
+  height: 3rem;
+  width: 80%;
+  border-radius: 15px;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 2px 2px 4px 0px rgba(0, 0, 0, 0.69);
+}
+.text {
+  display: inline;
+}
+.value {
+  float: right;
+  padding: 3px 10px;
+  margin-top: -5px;
+  font-size: 1.2rem;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+}
+.used {
+  background-color: rgb(146, 146, 146);
+}
