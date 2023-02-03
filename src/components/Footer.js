@@ -7,7 +7,7 @@ const Footer = ({pointsTotal}) => {
 
     const addPointsToTotal = () => {
         const initialPoints = currentClass.pointsTotal;
-        setCurrentClass((prev)=>{return {...prev, pointsTotal: initialPoints+prev.pointsToday}}) 
+        setCurrentClass((prev)=>{return {...prev, pointsTotal: initialPoints+prev.pointsToday}})      
     }
 
     return <div className={classes.footer}>

@@ -17,11 +17,15 @@ const classNames = [
 ];
 
 function App() {
+  const [menuOpen, setMenuOpen] = useState(false);
   const [currentClass, setCurrentClass] = useState({
     title: "SELECT CLASS",
     pointsTotal: 0,
     pointsToday: 0,
   });
+  const showListItemsFn = (e) => {
+    setMenuOpen(e);
+  }
 
   return (
     <ClassContext.Provider value={{ currentClass, setCurrentClass }}>
@@ -29,10 +33,14 @@ function App() {
         title={`selected class here`}
         total={10}
         classNames={classNames}
+        showListItemsFn={showListItemsFn}
       />
+      {!menuOpen &&<div className='bodyClass'>
       {currentClass.title!==`SELECT CLASS` && points.map((el) => {
         return <PointButton points={el} key={el.title} />;
       })}
+
+      </div>}
       <Footer pointsTotal={currentClass.pointsTotal}/>
     </ClassContext.Provider>
   );
