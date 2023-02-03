@@ -4,11 +4,13 @@ import classes from "./Header.module.css";
 import { BiRightArrow } from "react-icons/bi";
 import { ClassContext } from "../Context/ClassContext";
 
-const Header = ({ classNames, showListItemsFn }) => {
+const Header = ({ classNames, showListItemsFn, signedIn }) => {
   const [showListItems, setShowListItems] = useState(false);
   const { currentClass, setCurrentClass } = useContext(ClassContext);
 
   const showList = (e) => {
+    if(!signedIn)return;
+
     if (!showListItems) {
       setShowListItems(true);
       showListItemsFn(true);
