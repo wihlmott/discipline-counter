@@ -1,0 +1,13 @@
+.allScores {
+  z-index: 2;
+  position: absolute;
+  bottom: 0;
+  width: 90%;
+  height: auto;
+  background-color: rgb(255, 153, 0);
+}
+
+.groupName,
+.text {
+  padding: 10px;
+}

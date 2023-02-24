@@ -1,15 +1,17 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import classes from "./Header.module.css";
 //icons
 import { BiRightArrow } from "react-icons/bi";
 import { ClassContext } from "../Context/ClassContext";
+import { retrieveClasses } from "../Firebase";
 
 const Header = ({ classNames, showListItemsFn, signedIn }) => {
   const [showListItems, setShowListItems] = useState(false);
+  const [allClasses, setAllClasses] = useState();
   const { currentClass, setCurrentClass } = useContext(ClassContext);
 
   const showList = (e) => {
-    if(!signedIn)return;
+    if (!signedIn) return;
 
     if (!showListItems) {
       setShowListItems(true);
@@ -21,26 +23,34 @@ const Header = ({ classNames, showListItemsFn, signedIn }) => {
 
     switch (e.target.innerHTML) {
       case "11 A1":
+        retrieveClasses().then((res) => {
+          console.log(res);
+          setCurrentClass({
+            title: "11A1",
+            pointsTotal: res[0].totalScore,
+            pointsToday: 0,
+          });
+        });
         //will need to read points from db
-        setCurrentClass({ title: "11 A1", pointsTotal: 0, pointsToday: 0 });
+
         break;
       case "11 E1":
-        setCurrentClass({ title: "11 E1", pointsTotal: 0, pointsToday: 0 });
+        setCurrentClass({ title: "11E1", pointsTotal: 0, pointsToday: 0 });
         break;
       case "11 E2":
-        setCurrentClass({ title: "11 E2", pointsTotal: 0, pointsToday: 0 });
+        setCurrentClass({ title: "11E2", pointsTotal: 0, pointsToday: 0 });
         break;
       case "11 E3":
-        setCurrentClass({ title: "11 E3", pointsTotal: 0, pointsToday: 0 });
+        setCurrentClass({ title: "11E3", pointsTotal: 0, pointsToday: 0 });
         break;
       case "11 E4":
-        setCurrentClass({ title: "11 E4", pointsTotal: 0, pointsToday: 0 });
+        setCurrentClass({ title: "11E4", pointsTotal: 0, pointsToday: 0 });
         break;
       case "11 E5":
-        setCurrentClass({ title: "11 E5", pointsTotal: 0, pointsToday: 0 });
+        setCurrentClass({ title: "11E5", pointsTotal: 0, pointsToday: 0 });
         break;
       case "11 E6":
-        setCurrentClass({ title: "11 E6", pointsTotal: 0, pointsToday: 0 });
+        setCurrentClass({ title: "11E6", pointsTotal: 0, pointsToday: 0 });
         break;
     }
   };

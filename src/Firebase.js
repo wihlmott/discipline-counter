@@ -1,7 +1,11 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  setDoc,
+  doc,
+} from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -10,8 +14,42 @@ const firebaseConfig = {
   projectId: "discipline-counter",
   storageBucket: "discipline-counter.appspot.com",
   messagingSenderId: "855659707264",
-  appId: "1:855659707264:web:dc0ef92077dc0a349c5f65"
+  appId: "1:855659707264:web:dc0ef92077dc0a349c5f65",
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+
+const db = getFirestore();
+const collectionRef = collection(db, "classes");
+
+export const retrieveClasses = async () => {
+  console.log(`fetching classes`);
+
+  const classes = [];
+  try {
+    const snapshot = await getDocs(collectionRef);
+    snapshot.docs.forEach((doc) => {
+      classes.push({ ...doc.data(), id: doc.id });
+    });
+  } catch (err) {
+    console.log(err + ` -- error fetching classes`);
+  }
+  return classes;
+};
+
+export const setScore = async (classGroup, date, entry) => {
+  console.log(`setting score`);
+
+  try {
+    await setDoc(
+      doc(db, classGroup, date),
+      {
+        entry: entry,
+      },
+      { merge: true }
+    );
+  } catch (err) {
+    console.log(err + `-- error setting score`);
+  }
+};
