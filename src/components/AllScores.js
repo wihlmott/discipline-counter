@@ -1,24 +1,30 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import { retrieveClasses } from "../Firebase";
+import { classGroup } from "../Config/Config";
+import { retrieveClass } from "../Firebase";
 import classes from "./AllScores.module.css";
 
 const AllScores = () => {
-  const [allClasses, setAllClasses] = useState();
+  const [allScores, setAllScores] = useState([]);
 
   useEffect(() => {
-    retrieveClasses().then((res) => setAllClasses(res));
+    classGroup.forEach(async (el) => {
+      const classEntries = await retrieveClass(el);
+      const score = classEntries.reduce((acc, curr) => {
+        return acc + curr.points;
+      }, 0);
+      setAllScores((prev) => [...prev, score]);
+    });
   }, []);
 
-  if (!allClasses) return;
   return (
     <div className={classes.allScores}>
-      {allClasses.map((group) => {
+      {classGroup.map((group, i) => {
         return (
-          <div>
-            <span className={classes.groupName}>{group.id}</span>
+          <div key={group}>
+            <span className={classes.groupName}>{group}</span>
             <span className={classes.text}>{`total score -- `}</span>
-            <span className={classes.score}>{group.totalScore}</span>
+            <span className={classes.score}>{allScores[i]}</span>
           </div>
         );
       })}

@@ -1,13 +1,12 @@
-import { useContext, useEffect, useState } from "react";
-import classes from "./Header.module.css";
-//icons
-import { BiRightArrow } from "react-icons/bi";
+import { useContext, useState } from "react"; //hooks
+import classes from "./Header.module.css"; //styling
+import { BiRightArrow } from "react-icons/bi"; //icons
+import { classGroup } from "../Config/Config";
 import { ClassContext } from "../Context/ClassContext";
-import { retrieveClasses } from "../Firebase";
+import { retrieveClass } from "../Firebase";
 
-const Header = ({ classNames, showListItemsFn, signedIn }) => {
+const Header = ({ showListItemsFn, signedIn }) => {
   const [showListItems, setShowListItems] = useState(false);
-  const [allClasses, setAllClasses] = useState();
   const { currentClass, setCurrentClass } = useContext(ClassContext);
 
   const showList = (e) => {
@@ -21,38 +20,20 @@ const Header = ({ classNames, showListItemsFn, signedIn }) => {
       showListItemsFn(false);
     }
 
-    switch (e.target.innerHTML) {
-      case "11 A1":
-        retrieveClasses().then((res) => {
-          console.log(res);
+    classGroup.forEach((el) => {
+      if (el === e.target.innerHTML) {
+        retrieveClass(el).then((res) => {
           setCurrentClass({
-            title: "11A1",
-            pointsTotal: res[0].totalScore,
+            title: el,
+            pointsTotal: res.reduce((acc, curr) => {
+              return acc + curr.points;
+            }, 0),
             pointsToday: 0,
+            selection: [],
           });
         });
-        //will need to read points from db
-
-        break;
-      case "11 E1":
-        setCurrentClass({ title: "11E1", pointsTotal: 0, pointsToday: 0 });
-        break;
-      case "11 E2":
-        setCurrentClass({ title: "11E2", pointsTotal: 0, pointsToday: 0 });
-        break;
-      case "11 E3":
-        setCurrentClass({ title: "11E3", pointsTotal: 0, pointsToday: 0 });
-        break;
-      case "11 E4":
-        setCurrentClass({ title: "11E4", pointsTotal: 0, pointsToday: 0 });
-        break;
-      case "11 E5":
-        setCurrentClass({ title: "11E5", pointsTotal: 0, pointsToday: 0 });
-        break;
-      case "11 E6":
-        setCurrentClass({ title: "11E6", pointsTotal: 0, pointsToday: 0 });
-        break;
-    }
+      }
+    });
   };
 
   return (
@@ -67,7 +48,7 @@ const Header = ({ classNames, showListItemsFn, signedIn }) => {
               : `${classes.arrowBtn} ${classes.selectedArrow}`
           }
         />
-        {classNames.map((el) => {
+        {classGroup.map((el) => {
           return (
             <li
               className={
@@ -75,9 +56,9 @@ const Header = ({ classNames, showListItemsFn, signedIn }) => {
                   ? `${classes.classSymbol}`
                   : `${classes.classSymbol} ${classes.hidden}`
               }
-              key={el.className.split("^")[1]}
+              key={el}
             >
-              {el.className.split("^")[1]}
+              {el}
             </li>
           );
         })}

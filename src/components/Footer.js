@@ -10,15 +10,16 @@ const Footer = ({ pointsTotal }) => {
   const [showAllScores, setShowAllScores] = useState(false);
 
   const addPointsToTotal = () => {
-    // const initialPoints = currentClass.pointsTotal;
-    // setCurrentClass((prev) => {
-    //   return { ...prev, pointsTotal: initialPoints + prev.pointsToday };
-    // });
+    if (currentClass.title === "welcome") return;
+    if (currentClass.pointsToday === 0) return;
+
     const now = new Date();
     setScore(currentClass.title, now, {
       points: currentClass.pointsToday,
-      selection: `used`,
+      selection: currentClass.selection,
     });
+
+    setCurrentClass({ title: "welcome" });
   };
 
   const toggleShowScore = () => {

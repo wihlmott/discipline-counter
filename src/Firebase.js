@@ -21,16 +21,16 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 const db = getFirestore();
-const collectionRef = collection(db, "classes");
 
-export const retrieveClasses = async () => {
-  console.log(`fetching classes`);
+export const retrieveClass = async (classGroup) => {
+  console.log(`fetching class -- ${classGroup}`);
 
+  const collectionRef = collection(db, classGroup);
   const classes = [];
   try {
     const snapshot = await getDocs(collectionRef);
     snapshot.docs.forEach((doc) => {
-      classes.push({ ...doc.data(), id: doc.id });
+      classes.push({ ...doc.data().entry, id: doc.id });
     });
   } catch (err) {
     console.log(err + ` -- error fetching classes`);
@@ -41,9 +41,16 @@ export const retrieveClasses = async () => {
 export const setScore = async (classGroup, date, entry) => {
   console.log(`setting score`);
 
+  const dateEntry = date
+    .toLocaleString("default", {
+      day: "numeric",
+      month: "short",
+    })
+    .replaceAll(" ", "");
+
   try {
     await setDoc(
-      doc(db, classGroup, date),
+      doc(db, classGroup, `${classGroup}--${dateEntry}`),
       {
         entry: entry,
       },

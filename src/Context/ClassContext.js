@@ -4,4 +4,5 @@ export const ClassContext = createContext({
   title: "",
   pointsTotal: "",
   pointsToday: "",
+  selection: [],
 });

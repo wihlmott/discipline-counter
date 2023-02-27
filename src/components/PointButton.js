@@ -8,9 +8,9 @@ const PointButton = (props) => {
   const [used, setUsed] = useState(false);
 
   //if title changes, set buttons to unused
-  useEffect(()=>{
+  useEffect(() => {
     setUsed(false);
-  },[currentClass.title]);
+  }, [currentClass.title]);
 
   const clicked = () => {
     setUsed(!used);
@@ -18,13 +18,27 @@ const PointButton = (props) => {
     if (used === false) {
       setCurrentClass((prev) => {
         const pointsToday = prev.pointsToday;
-        return { ...prev, pointsToday: pointsToday + props.points.value };
+        const selection = [...prev.selection, props.points.title];
+
+        return {
+          ...prev,
+          pointsToday: pointsToday + props.points.value,
+          selection: selection,
+        };
       });
     }
     if (used === true) {
       setCurrentClass((prev) => {
         const pointsToday = prev.pointsToday;
-        return { ...prev, pointsToday: pointsToday - props.points.value };
+        const selection = prev.selection.filter((el) => {
+          return el !== props.points.title;
+        });
+
+        return {
+          ...prev,
+          pointsToday: pointsToday - props.points.value,
+          selection: selection,
+        };
       });
     }
   };
