@@ -4,17 +4,33 @@ import Footer from "./components/Footer";
 import Header from "./components/Header";
 import PointButton from "./components/PointButton";
 import { ClassContext } from "./Context/ClassContext";
-import { points } from "./Config/Config";
+import { classGroup, points } from "./Config/Config";
+import classes from "./App.module.css";
 import LoginPage from "./components/LoginPage";
+import Summary from "./components/Summary";
 
 function App() {
   const [signedIn, setSignedIn] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [showSummary, setShowSummary] = useState({
+    show: false,
+    classGroup: "",
+  });
   const [currentClass, setCurrentClass] = useState({
     title: "SIGN-IN",
     pointsTotal: 0,
     pointsToday: 0,
   });
+  const showSummaryHandler = (e) => {
+    setShowSummary((prev) => {
+      return {
+        show: !prev.show,
+        classGroup: `${
+          prev.show ? "" : e.target.innerHTML.split("-")[1].trim()
+        }`,
+      };
+    });
+  };
   const showListItemsFn = (e) => {
     setMenuOpen(e);
   };
@@ -43,6 +59,31 @@ function App() {
             points.map((el) => {
               return <PointButton points={el} key={el.title} />;
             })}
+          {currentClass.title === `welcome` && (
+            <>
+              {showSummary.show ? (
+                <div
+                  className={classes.summaryBtn}
+                  onClick={showSummaryHandler}
+                >
+                  close summary
+                </div>
+              ) : (
+                classGroup.map((el) => (
+                  <div
+                    className={classes.summaryBtn}
+                    key={el}
+                    onClick={showSummaryHandler}
+                  >
+                    summary of - {el}
+                  </div>
+                ))
+              )}
+              {showSummary.show && (
+                <Summary classGroup={showSummary.classGroup} />
+              )}
+            </>
+          )}
         </div>
       )}
       <Footer pointsTotal={currentClass.pointsTotal} />

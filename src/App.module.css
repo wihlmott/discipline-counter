@@ -1,0 +1,10 @@
+.summaryBtn {
+  width: fit-content;
+  border-radius: 20px;
+  padding: 7px;
+  margin-top: 10px;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(255, 153, 0, 0.75);
+}

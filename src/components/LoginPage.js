@@ -1,20 +1,29 @@
-import classes from './LoginPage.module.css';
+import classes from "./LoginPage.module.css";
 
-const LoginPage = ({passwordHandler}) => {
-    let password;
+const LoginPage = ({ passwordHandler }) => {
+  let password;
 
-    const savePassword = (e) => {
-        password = e.target.value;
-    }
-    const sendPassword = () => {
-        passwordHandler(password);
-    }
+  const savePassword = (e) => {
+    password = e.target.value;
+  };
+  const sendPassword = (e) => {
+    e.preventDefault();
+    passwordHandler(password);
+  };
 
-    return <div className={classes.passwordDiv}>
-        <label>enter password:</label>
-        <input className={classes.password} type='password' onChange={savePassword}/>
-        <button className={classes.btn} onClick={sendPassword}>enter</button>
-    </div>
-}
+  return (
+    <form className={classes.passwordDiv}>
+      <label>enter password:</label>
+      <input
+        className={classes.password}
+        type="password"
+        onChange={savePassword}
+      />
+      <button type="submit" className={classes.btn} onClick={sendPassword}>
+        enter
+      </button>
+    </form>
+  );
+};
 
 export default LoginPage;
